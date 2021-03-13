@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"http-server/middleware"
 
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/negroni"
 	formatter "github.com/x-cray/logrus-prefixed-formatter"
 
+	"http-server/factory"
+	"http-server/middleware"
 	"http-server/router"
 )
 
@@ -29,6 +30,6 @@ func main() {
 	logger.Infof("Running server version: %s", Version)
 	n := negroni.New()
 	n.Use(middleware.NewLoggerMiddleware(logger))
-	n.UseHandler(router.NewRouter(nil, logger))
+	n.UseHandler(router.NewRouter(factory.NewFactory(), logger))
 	n.Run(fmt.Sprintf(":%d", PORT))
 }
