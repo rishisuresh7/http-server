@@ -36,7 +36,7 @@ func (f *factory) NewBook(b *proto.Book) book.Book {
 func (f *factory) NewGRPCClient() proto.BookServiceClient {
 	var err error
 	once.Do(func() {
-		conn, connErr := grpc.Dial(f.conf.GRPCUri, grpc.WithBlock(), grpc.WithInsecure())
+		conn, connErr := grpc.Dial(f.conf.GRPCUri, grpc.WithBlock(), grpc.WithInsecure(), grpc.WithAuthority(f.conf.Token))
 		if connErr != nil {
 			err = fmt.Errorf("unable to establish connection")
 			return
