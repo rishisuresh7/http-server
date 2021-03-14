@@ -4,58 +4,57 @@ import (
 	"context"
 	"fmt"
 
-	"http-server/models"
 	"http-server/proto"
 )
 
 type Book interface {
-	Get(c context.Context) (models.Book, error)
-	Create(c context.Context) (models.Book, error)
-	Update(c context.Context) (models.Book, error)
-	Delete(c context.Context) (models.Book, error)
+	Get(c context.Context) (*proto.Book, error)
+	Create(c context.Context) (*proto.Book, error)
+	Update(c context.Context) (*proto.Book, error)
+	Delete(c context.Context) (*proto.Book, error)
 }
 
 type book struct {
-	book models.Book
+	book *proto.Book
 	grpc proto.BookServiceClient
 }
 
-func NewBook(b models.Book, g proto.BookServiceClient) Book {
+func NewBook(b *proto.Book, g proto.BookServiceClient) Book {
 	return &book{book: b, grpc: g}
 }
 
-func (b *book) Get(c context.Context) (models.Book, error) {
-	res, err := b.grpc.Get(c, &proto.Book{Id: b.book.Id})
+func (b *book) Get(c context.Context) (*proto.Book, error) {
+	res, err := b.grpc.Get(c, b.book)
 	if err != nil {
-		return models.Book{}, fmt.Errorf("get: unable to retrieve book: %s", err.Error())
+		return nil, fmt.Errorf("get: unable to retrieve book: %s", err.Error())
 	}
 
-	return models.Book{Id: res.Id, Name: res.Name, Author: res.Author}, nil
+	return res, nil
 }
 
-func (b *book) Create(c context.Context) (models.Book, error) {
-	res, err := b.grpc.Create(c, &proto.Book{Id: b.book.Id, Name: b.book.Id, Author: b.book.Author})
+func (b *book) Create(c context.Context) (*proto.Book, error) {
+	res, err := b.grpc.Create(c, b.book)
 	if err != nil {
-		return models.Book{}, fmt.Errorf("create: unable to create book: %s", err.Error())
+		return nil, fmt.Errorf("create: unable to create book: %s", err.Error())
 	}
 
-	return models.Book{Id: res.Id, Name: res.Name, Author: res.Author}, nil
+	return res, nil
 }
 
-func (b *book) Update(c context.Context) (models.Book, error) {
-	res, err := b.grpc.Update(c, &proto.Book{Id: b.book.Id, Name: b.book.Id, Author: b.book.Author})
+func (b *book) Update(c context.Context) (*proto.Book, error) {
+	res, err := b.grpc.Update(c, b.book)
 	if err != nil {
-		return models.Book{}, fmt.Errorf("update: unable to update book: %s", err.Error())
+		return res, fmt.Errorf("update: unable to update book: %s", err.Error())
 	}
 
-	return models.Book{Id: res.Id, Name: res.Name, Author: res.Author}, nil
+	return res, nil
 }
 
-func (b *book) Delete(c context.Context) (models.Book, error) {
-	res, err := b.grpc.Delete(c, &proto.Book{Id: b.book.Id})
+func (b *book) Delete(c context.Context) (*proto.Book, error) {
+	res, err := b.grpc.Delete(c, b.book)
 	if err != nil {
-		return models.Book{}, fmt.Errorf("delete: unable to delete book: %s", err.Error())
+		return nil, fmt.Errorf("delete: unable to delete book: %s", err.Error())
 	}
 
-	return models.Book{Id: res.Id, Name: res.Name, Author: res.Author}, nil
+	return res, nil
 }

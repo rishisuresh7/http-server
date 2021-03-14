@@ -8,13 +8,13 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"http-server/factory"
-	"http-server/models"
+	"http-server/proto"
 	"http-server/response"
 )
 
 func Create(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var payload models.Book
+		var payload proto.Book
 		err := json.NewDecoder(r.Body).Decode(&payload)
 		if err != nil {
 			l.Errorf("Create: invalid payload: %s", err.Error())
@@ -28,7 +28,7 @@ func Create(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 			return
 		}
 
-		book := f.NewBook(payload)
+		book := f.NewBook(&payload)
 		res, err := book.Create(r.Context())
 		if err != nil {
 			l.WithError(err).Errorf("Create: unable to create book")
@@ -42,7 +42,7 @@ func Create(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 
 func Update(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var payload models.Book
+		var payload proto.Book
 		err := json.NewDecoder(r.Body).Decode(&payload)
 		if err != nil {
 			l.Errorf("Update: invalid payload: %s", err.Error())
@@ -56,7 +56,7 @@ func Update(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 			return
 		}
 
-		book := f.NewBook(payload)
+		book := f.NewBook(&payload)
 		res, err := book.Update(r.Context())
 		if err != nil {
 			l.WithError(err).Errorf("Update: unable to update book")
@@ -78,8 +78,8 @@ func Delete(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 			return
 		}
 
-		b := models.Book{Id: id}
-		book := f.NewBook(b)
+		b := proto.Book{Id: id}
+		book := f.NewBook(&b)
 		res, err := book.Delete(r.Context())
 		if err != nil {
 			l.WithError(err).Errorf("Delete: unable to delete book")
@@ -101,8 +101,8 @@ func Get(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 			return
 		}
 
-		b := models.Book{Id: id}
-		book := f.NewBook(b)
+		b := proto.Book{Id: id}
+		book := f.NewBook(&b)
 		res, err := book.Get(r.Context())
 		if err != nil {
 			l.WithError(err).Errorf("Get: unable to retrieve book")

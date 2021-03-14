@@ -9,14 +9,13 @@ import (
 
 	"http-server/book"
 	"http-server/config"
-	"http-server/models"
 	"http-server/proto"
 )
 
 var once sync.Once
 
 type Factory interface {
-	NewBook(b models.Book) book.Book
+	NewBook(b *proto.Book) book.Book
 	NewGRPCClient() proto.BookServiceClient
 }
 
@@ -30,14 +29,14 @@ func NewFactory(c *config.AppConfig, l *logrus.Logger) Factory {
 	return &factory{conf: c, logger: l}
 }
 
-func (f *factory) NewBook(b models.Book) book.Book {
+func (f *factory) NewBook(b *proto.Book) book.Book {
 	return book.NewBook(b, f.NewGRPCClient())
 }
 
 func (f *factory) NewGRPCClient() proto.BookServiceClient {
 	var err error
 	once.Do(func() {
-		conn, connErr := grpc.Dial(fmt.Sprintf(":%d", f.conf.Port), grpc.WithBlock(), grpc.WithInsecure())
+		conn, connErr := grpc.Dial(f.conf.GRPCUri, grpc.WithBlock(), grpc.WithInsecure())
 		if connErr != nil {
 			err = fmt.Errorf("unable to establish connection")
 			return
