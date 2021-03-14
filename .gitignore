@@ -1,4 +1,4 @@
-.build
 go.sum
 .idea
 .DS_Store
+build
