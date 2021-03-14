@@ -1,6 +1,8 @@
 # http-server
 ## Basic Http server to interact with a GRPC server
 
+## API Documentation: [api](api)
+
 ### Prerequisites
     - make
     - go
