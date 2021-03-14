@@ -29,7 +29,7 @@ func Create(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 		}
 
 		book := f.NewBook(payload)
-		res, err := book.Create()
+		res, err := book.Create(r.Context())
 		if err != nil {
 			l.WithError(err).Errorf("Create: unable to create book")
 			response.Error{Error: "unexpected error happened"}.ServerError(w)
@@ -57,7 +57,7 @@ func Update(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 		}
 
 		book := f.NewBook(payload)
-		res, err := book.Update()
+		res, err := book.Update(r.Context())
 		if err != nil {
 			l.WithError(err).Errorf("Update: unable to update book")
 			response.Error{Error: "unexpected error happened"}.ServerError(w)
@@ -80,14 +80,14 @@ func Delete(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 
 		b := models.Book{Id: id}
 		book := f.NewBook(b)
-		err := book.Delete()
+		res, err := book.Delete(r.Context())
 		if err != nil {
 			l.WithError(err).Errorf("Delete: unable to delete book")
 			response.Error{Error: "unexpected error happened"}.ServerError(w)
 			return
 		}
 
-		response.Success{Success: "book deleted successfully"}.Send(w)
+		response.Success{Success: res}.Send(w)
 	}
 }
 
@@ -103,7 +103,7 @@ func Get(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 
 		b := models.Book{Id: id}
 		book := f.NewBook(b)
-		res, err := book.Get()
+		res, err := book.Get(r.Context())
 		if err != nil {
 			l.WithError(err).Errorf("Get: unable to retrieve book")
 			response.Error{Error: "unexpected error happened"}.ServerError(w)
