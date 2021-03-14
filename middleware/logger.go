@@ -8,14 +8,17 @@ import (
 	"github.com/urfave/negroni"
 )
 
+// loggerMiddleware implements Middleware
 type loggerMiddleware struct {
 	logger *logrus.Logger
 }
 
+// NewLoggerMiddleware constructor for loggerMiddleware
 func NewLoggerMiddleware(l *logrus.Logger) Middleware {
 	return &loggerMiddleware{logger: l}
 }
 
+// ServeHTTP middleware to log requests
 func (l *loggerMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	start := time.Now()
 	method := r.Method

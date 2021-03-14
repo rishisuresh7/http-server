@@ -15,6 +15,7 @@ const (
 	DELETE = "DELETE"
 )
 
+// NewRouter contains all the routes and route handlers
 func NewRouter(f factory.Factory, l *logrus.Logger) *mux.Router {
 	router := mux.NewRouter()
 	router.HandleFunc("/health", handler.Health()).Methods(GET)

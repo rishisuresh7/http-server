@@ -6,14 +6,17 @@ import (
 	"net/http"
 )
 
+// Success struct to encode server success responses
 type Success struct {
 	Success interface{} `json:"success"`
 }
 
+// Error struct to encode server error responses
 type Error struct {
 	Error interface{} `json:"error"`
 }
 
+// Send method to send a response with status 200
 func (s Success) Send(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "Application/json")
 	w.WriteHeader(http.StatusOK)
@@ -25,6 +28,7 @@ func (s Success) Send(w http.ResponseWriter) error {
 	return nil
 }
 
+// ClientError method to send a response with status 400
 func (e Error) ClientError(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "Application/json")
 	w.WriteHeader(http.StatusBadRequest)
@@ -36,6 +40,7 @@ func (e Error) ClientError(w http.ResponseWriter) error {
 	return nil
 }
 
+// ServerError method to send a response with status 500
 func (e Error) ServerError(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "Application/json")
 	w.WriteHeader(http.StatusInternalServerError)

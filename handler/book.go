@@ -12,6 +12,7 @@ import (
 	"http-server/response"
 )
 
+// Create function to handle POST requests
 func Create(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var payload proto.Book
@@ -40,6 +41,7 @@ func Create(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 	}
 }
 
+// Update function to process PATCH requests
 func Update(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var payload proto.Book
@@ -68,6 +70,7 @@ func Update(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 	}
 }
 
+// Delete function to handle a delete request
 func Delete(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
@@ -91,6 +94,7 @@ func Delete(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 	}
 }
 
+// Get function to handle get requests
 func Get(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
