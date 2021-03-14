@@ -24,7 +24,7 @@ func Create(f factory.Factory, l *logrus.Logger) http.HandlerFunc {
 		}
 
 		if payload.Name == "" && payload.Author == "" {
-			l.Errorf("Create: 'name'/'author' is requried")
+			l.Errorf("Create: 'name'/'author' is required")
 			response.Error{Error: "invalid request"}.ClientError(w)
 			return
 		}

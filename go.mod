@@ -8,8 +8,9 @@ require (
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
 	github.com/sirupsen/logrus v1.8.1
+	github.com/stretchr/testify v1.5.1
 	github.com/urfave/negroni v1.0.0
-	github.com/x-cray/logrus-prefixed-formatter v0.5.2 // indirect
+	github.com/x-cray/logrus-prefixed-formatter v0.5.2
 	golang.org/x/net v0.0.0-20210226172049-e18ecbb05110 // indirect
 	golang.org/x/sys v0.0.0-20210313110737-8e9fff1a3a18 // indirect
 	golang.org/x/text v0.3.5 // indirect
